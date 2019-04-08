@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class StarGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	TextureRegion region;
+//	TextureRegion region;
 	
 	@Override
 	public void create () {
