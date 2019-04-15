@@ -1,35 +1,43 @@
 package ru.geekbrains.screen;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
+import ru.geekbrains.math.Rect;
+import ru.geekbrains.sprite.Background;
 
 public class MenuScreen extends BaseScreen {
 
-    private Vector2 pos;
-    private Texture img;
+    private Texture bg;
+    private Background background;
 
     @Override
     public void show() {
         super.show();
-        pos = new Vector2();
-        img = new Texture("badlogic.jpg");
-        batch.getProjectionMatrix().idt();
+        bg = new Texture("bg.png");
+        background = new Background(new TextureRegion(bg));
+    }
+
+    @Override
+    public void resize(Rect wordBounds) {
+        super.resize(wordBounds);
+        background.resize(wordBounds);
     }
 
     @Override
     public void render(float delta) {
         super.render(delta);
         batch.begin();
-        batch.draw(img, -0.5f, -0.5f, 1f, 1f);
+        background.draw(batch);
         batch.end();
     }
 
     @Override
     public void dispose() {
         super.dispose();
-        img.dispose();
+        bg.dispose();
     }
 
     @Override
