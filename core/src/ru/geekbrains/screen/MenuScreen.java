@@ -1,35 +1,36 @@
 package ru.geekbrains.screen;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
-import ru.geekbrains.sprite.Logo;
+import ru.geekbrains.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
 
     private Texture bg;
-    private Texture textureLogo;
     private Background background;
-    private Logo logo;
+    private TextureAtlas atlas;
+    private Star star;
 
     @Override
     public void show() {
         super.show();
-        bg = new Texture("bg.png");
-        textureLogo = new Texture("badlogic.jpg");
+        bg = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(bg));
-        logo = new Logo(new TextureRegion(textureLogo));
+        atlas = new TextureAtlas("textures/menuAtlas.tpack");
+        star = new Star(atlas);
     }
 
     @Override
     public void resize(Rect wordBounds) {
         super.resize(wordBounds);
         background.resize(wordBounds);
-        logo.resize(wordBounds);
+        star.resize(wordBounds);
     }
 
     @Override
@@ -40,13 +41,13 @@ public class MenuScreen extends BaseScreen {
     }
 
     private void update(float delta) {
-        logo.update(delta);
+        star.update(delta);
     }
 
     private void draw() {
         batch.begin();
         background.draw(batch);
-        logo.draw(batch);
+        star.draw(batch);
         batch.end();
     }
 
@@ -54,12 +55,11 @@ public class MenuScreen extends BaseScreen {
     public void dispose() {
         super.dispose();
         bg.dispose();
-        textureLogo.dispose();
+        atlas.dispose();
     }
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        logo.touchDown(touch, pointer);
         return false;
     }
 }
