@@ -11,6 +11,7 @@ import ru.geekbrains.pool.BulletPool;
 public class Enemy extends Ship {
 
     private enum State {DESCENT, FIGHT}
+
     private State state;
     private Vector2 descentV;
 
@@ -38,8 +39,11 @@ public class Enemy extends Ship {
                 shoot();
             }
         }
-        if (isOutside(worldBounds)) {
+        if (getBottom() < worldBounds.getBottom()) {
             destroy();
+            mainShip.damage(damage);
+        }
+        if (isOutside(worldBounds)) {
         }
     }
 
@@ -66,5 +70,13 @@ public class Enemy extends Ship {
         v.set(descentV);
         reloadTimer = reloadInterval;
         state = State.DESCENT;
+    }
+
+    public boolean isBulletCollision(Rect bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y
+        );
     }
 }
