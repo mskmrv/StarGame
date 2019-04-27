@@ -9,12 +9,12 @@ public abstract class SpritesPool<T extends Sprite> {
     protected final List<T> activeOdjects = new ArrayList<T>();
     protected final List<T> freeOdjects = new ArrayList<T>();
 
-    protected abstract T newObjects();
+    protected abstract T newObject();
 
     public T obtain() {
         T object;
         if (freeOdjects.isEmpty()) {
-            object = newObjects();
+            object = newObject();
         } else {
             object = freeOdjects.remove(freeOdjects.size() - 1);
         }

@@ -6,7 +6,7 @@ import ru.geekbrains.sprite.Bullet;
 public class BulletPool extends SpritesPool<Bullet> {
 
     @Override
-    protected Bullet newObjects() {
+    protected Bullet newObject() {
         return new Bullet();
     }
 }

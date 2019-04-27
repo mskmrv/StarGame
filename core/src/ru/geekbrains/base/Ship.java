@@ -6,7 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
+import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Bullet;
+import ru.geekbrains.sprite.Explosion;
 
 public class Ship extends Sprite {
     protected Sound shootSound;
@@ -15,6 +17,7 @@ public class Ship extends Sprite {
     protected Vector2 v0;
 
     protected BulletPool bulletPool;
+    protected ExplosionPool explosionPool;
     protected TextureRegion bulletRegion;
     protected float bulletHeight;
     protected Vector2 bulletV;
@@ -74,6 +77,12 @@ public class Ship extends Sprite {
     @Override
     public void destroy() {
         super.destroy();
+        boom();
         hp = 0;
+    }
+
+    private void boom() {
+        Explosion explosion = explosionPool.obtain();
+        explosion.set(this.getHeight(), this.pos);
     }
 }

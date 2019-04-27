@@ -14,6 +14,7 @@ import ru.geekbrains.base.BaseScreen;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
+import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.Enemy;
@@ -32,6 +33,7 @@ public class GameScreen extends BaseScreen {
 
     private BulletPool bulletPool;
     private EnemyPool enemyPool;
+    private ExplosionPool explosionPool;
 
     private Music music;
     private Sound laserSound;
@@ -55,8 +57,9 @@ public class GameScreen extends BaseScreen {
             starList[i] = new Star(atlas);
         }
         bulletPool = new BulletPool();
-        mainShip = new MainShip(atlas, bulletPool, laserSound);
-        enemyPool = new EnemyPool(bulletPool, bulletSound, wordBounds, mainShip);
+        explosionPool = new ExplosionPool(atlas);
+        mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
+        enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, wordBounds, mainShip);
         enemyGenerator = new EnemyGenerator(atlas, enemyPool, wordBounds);
     }
 
@@ -73,10 +76,13 @@ public class GameScreen extends BaseScreen {
         for (Star star : starList) {
             star.update(delta);
         }
-        mainShip.update(delta);
+        if (!mainShip.isDestroyed()) {
+            mainShip.update(delta);
+            enemyGenerator.generate(delta);
+        }
         bulletPool.updateActiveSprites(delta);
         enemyPool.updateActiveSprites(delta);
-        enemyGenerator.generate(delta);
+        explosionPool.updateActiveSprites(delta);
     }
 
     private void checkCollisions() {
@@ -123,6 +129,7 @@ public class GameScreen extends BaseScreen {
     private void freeAllDestroyedSprite() {
         bulletPool.freeAllDestroyedActiveSprites();
         enemyPool.freeAllDestroyedActiveSprites();
+        explosionPool.freeAllDestroyedActiveSprites();
     }
 
     private void draw() {
@@ -136,6 +143,7 @@ public class GameScreen extends BaseScreen {
         }
         bulletPool.drawActiveSprites(batch);
         enemyPool.drawActiveSprites(batch);
+        explosionPool.drawActiveSprites(batch);
         batch.end();
     }
 
@@ -156,6 +164,7 @@ public class GameScreen extends BaseScreen {
         atlas.dispose();
         bulletPool.dispose();
         enemyPool.dispose();
+        explosionPool.dispose();
         music.dispose();
         laserSound.dispose();
         bulletSound.dispose();
