@@ -37,5 +37,5 @@ public abstract class ScaledTouchUpButton extends Sprite {
         return false;
     }
 
-    public abstract void action();
+    protected abstract void action();
 }
