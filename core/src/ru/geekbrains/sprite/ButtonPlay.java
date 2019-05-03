@@ -8,7 +8,6 @@ import ru.geekbrains.math.Rect;
 import ru.geekbrains.screen.GameScreen;
 
 public class ButtonPlay extends ScaledTouchUpButton {
-
     private Game game;
 
     public ButtonPlay(TextureAtlas atlas, Game game) {

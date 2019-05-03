@@ -7,7 +7,6 @@ import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 
 public class Bullet extends Sprite {
-
     private Rect worldBounds;
     private Vector2 v = new Vector2();
     private int damage;

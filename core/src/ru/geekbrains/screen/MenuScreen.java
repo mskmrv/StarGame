@@ -14,7 +14,6 @@ import ru.geekbrains.sprite.ButtonPlay;
 import ru.geekbrains.sprite.Star;
 
 public class MenuScreen extends BaseScreen {
-
     private Game game;
 
     private Texture bg;

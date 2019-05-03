@@ -10,7 +10,6 @@ import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.ExplosionPool;
 
 public class Enemy extends Ship {
-
     private enum State {DESCENT, FIGHT}
 
     private State state;

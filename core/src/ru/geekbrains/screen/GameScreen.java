@@ -18,6 +18,7 @@ import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.Enemy;
+import ru.geekbrains.sprite.GameOver;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyGenerator;
@@ -49,6 +50,8 @@ public class GameScreen extends BaseScreen {
 
     private EnemyGenerator enemyGenerator;
 
+    private GameOver gameOver;
+
     @Override
     public void show() {
         super.show();
@@ -70,6 +73,7 @@ public class GameScreen extends BaseScreen {
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemyPool = new EnemyPool(bulletPool, explosionPool, bulletSound, wordBounds, mainShip);
         enemyGenerator = new EnemyGenerator(atlas, enemyPool, wordBounds);
+        gameOver = new GameOver(atlas);
         state = State.PLAYING;
     }
 
@@ -159,6 +163,8 @@ public class GameScreen extends BaseScreen {
             mainShip.draw(batch);
             bulletPool.drawActiveSprites(batch);
             enemyPool.drawActiveSprites(batch);
+        } else if (state == State.GAME_OVER) {
+            gameOver.draw(batch);
         }
         explosionPool.drawActiveSprites(batch);
         batch.end();

@@ -7,9 +7,6 @@ import ru.geekbrains.base.ScaledTouchUpButton;
 import ru.geekbrains.math.Rect;
 
 public class ButtonExit extends ScaledTouchUpButton {
-
-
-
     public ButtonExit(TextureAtlas atlas) {
         super(atlas.findRegion("btExit"));
         setHeightProportion(0.15f);

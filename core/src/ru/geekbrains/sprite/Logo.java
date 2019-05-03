@@ -8,7 +8,6 @@ import ru.geekbrains.base.Sprite;
 import ru.geekbrains.math.Rect;
 
 public class Logo extends Sprite {
-
     private Vector2 touch;
     private Vector2 v;
     private Vector2 buf;
