@@ -11,7 +11,7 @@ import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.ExplosionPool;
 
 public class MainShip extends Ship {
-    private static final int HP = 10;
+    private static final int HP = 100;
     private static final int INVALID_POINTER = -1;
 
     private boolean pressedRight;
@@ -32,7 +32,7 @@ public class MainShip extends Ship {
         this.bulletV.set(0, 0.5f);
         this.bulletHeight = 0.015f;
         this.damage = 1;
-        this.hp = 10;
+        this.hp = HP;
         this.v0.set(0.5f, 0);
     }
 

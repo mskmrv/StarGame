@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Align;
 
 import java.util.List;
 
@@ -23,8 +24,13 @@ import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.NewGame;
 import ru.geekbrains.sprite.Star;
 import ru.geekbrains.utils.EnemyGenerator;
+import ru.geekbrains.utils.Font;
 
 public class GameScreen extends BaseScreen {
+    private static final String FRAGS = "Frags: ";
+    private static final String HP = "HP: ";
+    private static final String LEVEL = "Level: ";
+
     private enum State {
         PLAYING,
         PAUSE,
@@ -54,6 +60,13 @@ public class GameScreen extends BaseScreen {
     private GameOver gameOver;
     private NewGame newGame;
 
+    private Font font;
+    private StringBuilder sbFrags = new StringBuilder();
+    private StringBuilder sbHP = new StringBuilder();
+    private StringBuilder sbLevel = new StringBuilder();
+
+    private int frags = 0;
+
     @Override
     public void show() {
         super.show();
@@ -77,6 +90,8 @@ public class GameScreen extends BaseScreen {
         enemyGenerator = new EnemyGenerator(atlas, enemyPool, wordBounds);
         gameOver = new GameOver(atlas);
         newGame = new NewGame(atlas, this);
+        font = new Font("font/font.fnt", "font/font.png");
+        font.setFontSize(0.03f);
         state = State.PLAYING;
     }
 
@@ -96,7 +111,7 @@ public class GameScreen extends BaseScreen {
         explosionPool.updateActiveSprites(delta);
         if (state == State.PLAYING) {
             mainShip.update(delta);
-            enemyGenerator.generate(delta);
+            enemyGenerator.generate(delta, frags);
             bulletPool.updateActiveSprites(delta);
             enemyPool.updateActiveSprites(delta);
         }
@@ -134,6 +149,9 @@ public class GameScreen extends BaseScreen {
                     if (enemy.isBulletCollision(bullet)) {
                         enemy.damage(bullet.getDamage());
                         bullet.destroy();
+                        if (enemy.isDestroyed()) {
+                            frags++;
+                        }
                         return;
                     }
                 }
@@ -171,7 +189,17 @@ public class GameScreen extends BaseScreen {
             newGame.draw(batch);
         }
         explosionPool.drawActiveSprites(batch);
+        printInfo();
         batch.end();
+    }
+
+    private void printInfo() {
+        sbFrags.setLength(0);
+        sbHP.setLength(0);
+        sbLevel.setLength(0);
+        font.draw(batch, sbFrags.append(FRAGS).append(frags), wordBounds.getLeft(), wordBounds.getTop());
+        font.draw(batch, sbHP.append(HP).append(mainShip.getHp()), wordBounds.pos.x, wordBounds.getTop(), Align.center);
+        font.draw(batch, sbLevel.append(LEVEL).append(enemyGenerator.getStage()), wordBounds.getRight(), wordBounds.getTop(), Align.right);
     }
 
     @Override
@@ -214,6 +242,7 @@ public class GameScreen extends BaseScreen {
         laserSound.dispose();
         bulletSound.dispose();
         explosionSound.dispose();
+        font.dispose();
     }
 
     @Override
@@ -255,6 +284,8 @@ public class GameScreen extends BaseScreen {
     public void reset() {
         state = State.PLAYING;
         mainShip.reset();
+        frags = 0;
+        enemyGenerator.setStage(1);
         bulletPool.freeAllActiveSprites();
         enemyPool.freeAllActiveSprites();
         explosionPool.freeAllActiveSprites();
